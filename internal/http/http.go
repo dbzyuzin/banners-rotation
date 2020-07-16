@@ -5,19 +5,20 @@ import (
 	"net/http"
 )
 
-func NewHandler() (http.Handler, error) {
+func NewHandler(di *Di) (http.Handler, error) {
 	router := mux.NewRouter()
 
-	router.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte("Hello"))
-	})
+	monkey := func(handler handlerFunc) func(w http.ResponseWriter, r *http.Request) {
+		return func(w http.ResponseWriter, r *http.Request) {
+			handler(w, r, di)
+		}
+	}
 
-	router.HandleFunc("/name/{name}", func(w http.ResponseWriter, r *http.Request) {
-		vars := mux.Vars(r)
-		name := vars["name"]
-
-		w.Write([]byte("Hello, " + name))
-	})
+	router.HandleFunc("/", monkey(hello))
 
 	return router, nil
 }
+
+var hello = handlerFunc(func(w http.ResponseWriter, r *http.Request, di *Di) {
+	w.Write([]byte("Text"))
+})

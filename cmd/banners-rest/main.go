@@ -7,8 +7,7 @@ import (
 )
 
 func main() {
-
-	h, _ := handler.NewHandler()
+	h, _ := handler.NewHandler(&handler.Di{})
 
 	log.Fatal(http.ListenAndServe(":80", h))
 }
