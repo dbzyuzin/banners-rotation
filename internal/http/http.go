@@ -1,24 +1,23 @@
 package http
 
 import (
+	"github.com/dbzyuzin/banners-rotation.git/internal/storage"
 	"github.com/gorilla/mux"
 	"net/http"
 )
 
-func NewHandler(di *Di) (http.Handler, error) {
+func NewHandler(store *storage.Storage) (http.Handler, error) {
 	router := mux.NewRouter()
 
-	monkey := func(handler handlerFunc) func(w http.ResponseWriter, r *http.Request) {
-		return func(w http.ResponseWriter, r *http.Request) {
-			handler(w, r, di)
-		}
-	}
+	groupsHandler := NewSDGroupHandler(store.SDGroups)
 
-	router.HandleFunc("/", monkey(hello))
+	groups := router.PathPrefix("/sd-groups").Subrouter()
+	groups.Handle("", asHandler(groupsHandler.Create)).Methods("POST")
+	groups.Handle("", asHandler(groupsHandler.GetAll)).Methods("GET")
 
 	return router, nil
 }
 
-var hello = handlerFunc(func(w http.ResponseWriter, r *http.Request, di *Di) {
-	w.Write([]byte("Text"))
-})
+func asHandler(in func(w http.ResponseWriter, r *http.Request)) http.HandlerFunc {
+	return in
+}
