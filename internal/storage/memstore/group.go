@@ -27,14 +27,6 @@ func (s *SDGroupStore) Create(ctx context.Context, sdgroup sdgroup.SDGroup) (int
 	return sdgroup.Id, nil
 }
 
-func (s SDGroupStore) GetById(id int64) (sdgroup.SDGroup, error) {
-	panic("implement me")
-}
-
-func (s SDGroupStore) GetWithLimit(limit int) ([]sdgroup.SDGroup, error) {
-	panic("implement me")
-}
-
 func (s SDGroupStore) GetAll() ([]sdgroup.SDGroup, error) {
 	s.mux.Lock()
 	defer s.mux.Unlock()
