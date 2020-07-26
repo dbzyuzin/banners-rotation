@@ -4,7 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/dbzyuzin/banners-rotation.git/internal/sdgroup"
+	"github.com/dbzyuzin/banners-rotation.git/internal/banner"
 	"github.com/gorilla/mux"
 	"io"
 	"io/ioutil"
@@ -12,17 +12,17 @@ import (
 	"strconv"
 )
 
-type SDGroupHandler struct {
-	Store sdgroup.Storage
+type BannerHandler struct {
+	Store banner.Storage
 }
 
-func NewSDGroupHandler(store sdgroup.Storage) *SDGroupHandler {
-	return &SDGroupHandler{
+func NewBannerHandler(store banner.Storage) *BannerHandler {
+	return &BannerHandler{
 		store,
 	}
 }
 
-func (s SDGroupHandler) Create(w http.ResponseWriter, r *http.Request) {
+func (s BannerHandler) Create(w http.ResponseWriter, r *http.Request) {
 	bodyReader := io.LimitReader(r.Body, 1<<20)
 	body, err := ioutil.ReadAll(bodyReader)
 	if err != nil {
@@ -31,7 +31,7 @@ func (s SDGroupHandler) Create(w http.ResponseWriter, r *http.Request) {
 	}
 	description := string(body)
 
-	id, err := s.Store.Create(context.Background(), sdgroup.SDGroup{Description: description})
+	id, err := s.Store.Create(context.Background(), banner.Banner{Description: description})
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		return
@@ -45,7 +45,7 @@ func (s SDGroupHandler) Create(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func (s SDGroupHandler) GetAll(w http.ResponseWriter, r *http.Request) {
+func (s BannerHandler) GetAll(w http.ResponseWriter, _ *http.Request) {
 	values, err := s.Store.GetAll()
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
@@ -65,7 +65,7 @@ func (s SDGroupHandler) GetAll(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func (s SDGroupHandler) Delete(w http.ResponseWriter, r *http.Request) {
+func (s BannerHandler) Delete(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	idStr := params["id"]
 	id, err := strconv.Atoi(idStr)

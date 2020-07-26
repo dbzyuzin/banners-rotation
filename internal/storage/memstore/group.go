@@ -12,13 +12,25 @@ type SDGroupStore struct {
 	groups []sdgroup.SDGroup
 }
 
+func (s *SDGroupStore) Delete(id int64) error {
+	s.mux.Lock()
+	defer s.mux.Unlock()
+	for i, group := range s.groups {
+		if group.Id == id {
+			s.groups = append(s.groups[:i], s.groups[i+1:]...)
+			return nil
+		}
+	}
+	return sdgroup.ErrNotFound
+}
+
 func NewSDGroupStore() *SDGroupStore {
 	return &SDGroupStore{
 		mux: &sync.Mutex{},
 	}
 }
 
-func (s *SDGroupStore) Create(ctx context.Context, sdgroup sdgroup.SDGroup) (int64, error) {
+func (s *SDGroupStore) Create(_ context.Context, sdgroup sdgroup.SDGroup) (int64, error) {
 	s.mux.Lock()
 	defer s.mux.Unlock()
 	s.lastId++
