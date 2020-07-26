@@ -70,6 +70,10 @@ func (s BannerHandler) Delete(w http.ResponseWriter, r *http.Request) {
 	idStr := params["id"]
 	id, err := strconv.Atoi(idStr)
 	if err != nil {
+		if err == banner.ErrNotFound {
+			w.WriteHeader(http.StatusNotFound)
+			return
+		}
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}

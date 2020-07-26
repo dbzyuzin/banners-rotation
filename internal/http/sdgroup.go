@@ -70,6 +70,10 @@ func (s SDGroupHandler) Delete(w http.ResponseWriter, r *http.Request) {
 	idStr := params["id"]
 	id, err := strconv.Atoi(idStr)
 	if err != nil {
+		if err == sdgroup.ErrNotFound {
+			w.WriteHeader(http.StatusNotFound)
+			return
+		}
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}

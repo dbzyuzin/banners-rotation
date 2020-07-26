@@ -30,21 +30,6 @@ func TestCreate(t *testing.T) {
 	require.NoError(t, err)
 }
 
-func TestCreate1(t *testing.T) {
-	h, _ := NewHandler(&storage.Storage{SDGroups: mock.NewSDGroupStore()})
-	server := httptest.NewServer(h)
-	defer server.Close()
-
-	resp, err := http.Post(server.URL+"/sd-groups", "text/plain", strings.NewReader("it is description"))
-	require.NoError(t, err)
-	require.Equal(t, http.StatusOK, resp.StatusCode)
-
-	r, _ := ioutil.ReadAll(resp.Body)
-	require.NoError(t, err)
-	_, err = strconv.Atoi(string(r))
-	require.NoError(t, err)
-}
-
 func TestGetAll(t *testing.T) {
 	groupStore := mock.NewSDGroupStore()
 	h, _ := NewHandler(&storage.Storage{SDGroups: groupStore})
