@@ -5,7 +5,7 @@ import (
 )
 
 type Storage interface {
-	Create(ctx context.Context, sdgroup SDGroup) (int64, error)
-	GetAll() ([]SDGroup, error)
-	Delete(id int64) error
+	CreateGroup(ctx context.Context, sdgroup SDGroup) (int64, error)
+	GetAllGroups() ([]SDGroup, error)
+	DeleteGroup(id int64) error
 }

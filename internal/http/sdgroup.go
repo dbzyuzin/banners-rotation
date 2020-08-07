@@ -31,7 +31,7 @@ func (s SDGroupHandler) Create(w http.ResponseWriter, r *http.Request) {
 	}
 	description := string(body)
 
-	id, err := s.Store.Create(context.Background(), sdgroup.SDGroup{Description: description})
+	id, err := s.Store.CreateGroup(context.Background(), sdgroup.SDGroup{Description: description})
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		return
@@ -46,7 +46,7 @@ func (s SDGroupHandler) Create(w http.ResponseWriter, r *http.Request) {
 }
 
 func (s SDGroupHandler) GetAll(w http.ResponseWriter, r *http.Request) {
-	values, err := s.Store.GetAll()
+	values, err := s.Store.GetAllGroups()
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		return
@@ -77,7 +77,7 @@ func (s SDGroupHandler) Delete(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
-	err = s.Store.Delete(int64(id))
+	err = s.Store.DeleteGroup(int64(id))
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		return

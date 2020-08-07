@@ -31,7 +31,7 @@ func (s SlotHandler) Create(w http.ResponseWriter, r *http.Request) {
 	}
 	description := string(body)
 
-	id, err := s.Store.Create(context.Background(), slot.Slot{Description: description})
+	id, err := s.Store.CreateSlot(context.Background(), slot.Slot{Description: description})
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		return
@@ -46,7 +46,7 @@ func (s SlotHandler) Create(w http.ResponseWriter, r *http.Request) {
 }
 
 func (s SlotHandler) GetAll(w http.ResponseWriter, _ *http.Request) {
-	values, err := s.Store.GetAll()
+	values, err := s.Store.GetAllSlots()
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		return
@@ -77,7 +77,7 @@ func (s SlotHandler) Delete(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
-	err = s.Store.Delete(int64(id))
+	err = s.Store.DeleteSlot(int64(id))
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		return

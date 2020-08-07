@@ -11,12 +11,12 @@ func TestCreateAndGet(t *testing.T) {
 	store := New()
 
 	description := "some text"
-	id, err := store.SDGroups.Create(context.Background(), sdgroup.SDGroup{
+	id, err := store.SDGroups.CreateGroup(context.Background(), sdgroup.SDGroup{
 		Description: description,
 	})
 	require.NoError(t, err)
 
-	values, err := store.SDGroups.GetAll()
+	values, err := store.SDGroups.GetAllGroups()
 	require.NoError(t, err)
 	require.Len(t, values, 1)
 

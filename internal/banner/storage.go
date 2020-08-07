@@ -5,7 +5,7 @@ import (
 )
 
 type Storage interface {
-	Create(ctx context.Context, slot Banner) (int64, error)
-	GetAll() ([]Banner, error)
-	Delete(id int64) error
+	CreateBanner(ctx context.Context, slot Banner) (int64, error)
+	GetAllBanners() ([]Banner, error)
+	DeleteBanner(id int64) error
 }

@@ -15,14 +15,14 @@ func NewSDGroupStore() *SDGroupStoreMock {
 	return &SDGroupStoreMock{}
 }
 
-func (s SDGroupStoreMock) Create(ctx context.Context, sdgroup sdgroup.SDGroup) (int64, error) {
+func (s SDGroupStoreMock) CreateGroup(ctx context.Context, sdgroup sdgroup.SDGroup) (int64, error) {
 	return s.CreateFunc(ctx, sdgroup)
 }
 
-func (s SDGroupStoreMock) Delete(id int64) error {
+func (s SDGroupStoreMock) DeleteGroup(id int64) error {
 	return s.DeleteFunc(id)
 }
 
-func (s SDGroupStoreMock) GetAll() ([]sdgroup.SDGroup, error) {
+func (s SDGroupStoreMock) GetAllGroups() ([]sdgroup.SDGroup, error) {
 	return s.GetAllFunc()
 }

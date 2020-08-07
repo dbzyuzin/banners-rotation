@@ -6,8 +6,8 @@ import (
 	"github.com/dbzyuzin/banners-rotation.git/internal/slot"
 )
 
-type Storage struct {
-	SDGroups sdgroup.Storage
-	Banners  banner.Storage
-	Slots    slot.Storage
+type Storage interface {
+	sdgroup.Storage
+	banner.Storage
+	slot.Storage
 }
